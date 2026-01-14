@@ -1,0 +1,127 @@
+https://chatgpt.com/share/6965fa4a-4798-8010-8873-c32807d37ebe
+
+📌 Sequelize CLI – Migration & Seeder Notes
+🧱 MIGRATIONS (Database Structure)
+🔹 What is a Migration?
+
+A migration is used to change database structure
+(tables, columns, constraints, indexes)
+
+🔹 Golden Rule
+
+One migration = One database change
+
+✔ Add column → new migration
+✔ Update column → new migration
+✔ Delete column → new migration
+✔ Add FK / index → new migration
+
+🔹 Migration Workflow
+1. Generate migration file
+2. Write schema change in `up()`
+3. Write rollback logic in `down()`
+4. Update Sequelize model
+5. Run migration
+
+🔹 Commands
+npx sequelize-cli migration:generate --name <migration-name>
+npx sequelize-cli db:migrate
+npx sequelize-cli db:migrate:undo
+npx sequelize-cli db:migrate:undo:all
+
+🔹 Migration Responsibilities
+
+✅ Create / modify / remove tables
+✅ Add / change / remove columns
+✅ Add constraints (FK, unique, index)
+❌ NEVER insert data
+
+🔹 Important Rule
+
+Every DB change MUST be reflected in the Sequelize model
+
+Migration = DB
+Model = App logic
+👉 Both must match
+
+🔹 ❌ Don’t Do This
+sequelize.sync({ alter: true });
+
+
+Dangerous ❌
+No rollback ❌
+Never use in production ❌
+
+🌱 SEEDERS (Database Data)
+🔹 What is a Seeder?
+
+A seeder is used to insert initial or dummy data into tables
+
+Examples:
+
+Default admin user
+
+Roles (admin, user)
+
+Test data
+
+Lookup tables
+
+🔹 Seeder Workflow
+1. Generate seeder file
+2. Insert data in `up()`
+3. Delete data in `down()`
+4. Run seeder
+
+🔹 Commands
+npx sequelize-cli seed:generate --name <seeder-name>
+npx sequelize-cli db:seed:all
+npx sequelize-cli db:seed --seed <file-name>
+npx sequelize-cli db:seed:undo
+npx sequelize-cli db:seed:undo:all
+
+🔹 Seeder Responsibilities
+
+✅ Insert data using bulkInsert
+✅ Remove data using bulkDelete
+❌ NEVER change table structure
+
+🔹 Seeder Best Practices
+
+✔ Always include createdAt, updatedAt
+✔ Hash passwords manually
+✔ Respect foreign key order
+✔ Use only queryInterface (not models)
+✔ Seed minimal required data
+
+🧠 Migration vs Seeder (Quick Compare)
+Feature	Migration	Seeder
+Changes DB structure	✅ Yes	❌ No
+Insert data	❌ No	✅ Yes
+Rollback supported	✅ Yes	✅ Yes
+Used in production	✅ Yes	⚠️ Careful
+🏆 FINAL GOLDEN RULES (MEMORIZE)
+Migration → Database structure
+Seeder     → Database data
+Model      → Application logic
+
+One change → One migration
+One responsibility → One file
+
+🔥 Typical JWT Project Usage
+
+Migration → add role, refresh_token
+
+Seeder → create admin user, roles
+
+Model → reflect both changes
+
+If you want next, I can:
+
+📂 Convert this note into a README.md
+
+🔐 Create JWT admin/user seeders
+
+🧪 Explain dev vs prod seeding strategy
+
+Just tell me 🚀
